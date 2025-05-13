@@ -3,18 +3,24 @@ package com.example.continentesapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.continentesapp.ui.theme.ContinentesAppTheme
-import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import com.example.continentesapp.ui.theme.ContinentesAppTheme
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +32,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun ContinentesApp() {
     val continentes = listOf("África", "Europa", "América", "Ásia")
@@ -36,34 +41,52 @@ fun ContinentesApp() {
         // Menu principal
         ContinenteMenu(onContinenteSelecionado = { continenteSelecionado = it })
     } else {
-        // Tela do continente
-        ContinenteScreen(continente = continenteSelecionado!!, onVoltar = { continenteSelecionado = null })
+        // Para quando você implementar as páginas dos continentes
+        // ContinenteScreen(continente = continenteSelecionado!!, onVoltar = { continenteSelecionado = null })
     }
 }
+
 @Composable
 fun ContinenteMenu(onContinenteSelecionado: (String) -> Unit) {
     val continentes = listOf("África", "Europa", "América", "Ásia")
 
-    Column(
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()  // Asegura que o Box preencha toda a tela
     ) {
-        continentes.forEach { continente ->
-            Button(
-                onClick = { onContinenteSelecionado(continente) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            ) {
-                Text(text = continente)
+        // Adiciona o background da imagem, ajustado para preencher toda a tela
+        Image(
+            painter = painterResource(id = R.drawable.backgrounddetailold),
+            contentDescription = "Background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds  // Preenche toda a tela sem bordas
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            continentes.forEach { continente ->
+                Button(
+                    onClick = { onContinenteSelecionado(continente) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)  // Aumentando o tamanho do botão
+                        .padding(vertical = 12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6B4226)) // Cor castanha
+                ) {
+                    Text(
+                        text = continente,
+                        style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp) // Negrito e maior fonte
+                    )
+                }
             }
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -72,50 +95,3 @@ fun ContinentesAppPreview() {
         ContinenteMenu(onContinenteSelecionado = {})
     }
 }
-
-
-@Composable
-fun ContinenteScreen(continente: String, onVoltar: () -> Unit) {
-    val imagens = when (continente.lowercase()) {
-        "áfrica" -> listOf(R.drawable.africa_1, R.drawable.africa_2, R.drawable.africa_3, R.drawable.africa_4)
-        "europa" -> listOf(R.drawable.europa_1, R.drawable.europa_2, R.drawable.europa_3, R.drawable.europa_4)
-        "américa" -> listOf(R.drawable.america_1, R.drawable.america_2, R.drawable.america_3, R.drawable.america_4)
-        "ásia" -> listOf(R.drawable.asia_1, R.drawable.asia_2, R.drawable.asia_3, R.drawable.asia_4)
-        else -> emptyList()
-    }
-
-    var imagemAtual by remember { mutableStateOf(imagens.random()) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = continente, style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Image(
-            painter = painterResource(id = imagemAtual),
-            contentDescription = "Imagem do continente",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp),
-            contentScale = ContentScale.Crop
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = { imagemAtual = imagens.random() }) {
-            Text(text = "Explorar")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TextButton(onClick = onVoltar) {
-            Text(text = "Voltar")
-        }
-    }
-}
-
