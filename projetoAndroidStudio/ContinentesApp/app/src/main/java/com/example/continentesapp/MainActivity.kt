@@ -41,7 +41,7 @@ fun ContinentesApp() {
         // Menu principal
         ContinenteMenu(onContinenteSelecionado = { continenteSelecionado = it })
     } else {
-        // Para quando você implementar as páginas dos continentes
+        // Para quando  implementar as páginas dos continentes
         // ContinenteScreen(continente = continenteSelecionado!!, onVoltar = { continenteSelecionado = null })
     }
 }
@@ -52,9 +52,9 @@ fun ContinenteMenu(onContinenteSelecionado: (String) -> Unit) {
 
     Box(
         modifier = Modifier
-            .fillMaxSize()  // Asegura que o Box preencha toda a tela
+            .fillMaxSize()  // Asegurar que o Box preencha toda a tela
     ) {
-        // Adiciona o background da imagem, ajustado para preencher toda a tela
+        // Adicionar o background da imagem, ajustado para preencher toda a tela
         Image(
             painter = painterResource(id = R.drawable.backgrounddetailold),
             contentDescription = "Background",
