@@ -226,7 +226,11 @@ fun ContinentScreen(
 
         Button(
             onClick = {
-                currentImage = imageResources.random()
+                var newImage: Int
+                do {
+                    newImage = imageResources.random()
+                } while (newImage == currentImage)
+                currentImage = newImage
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
